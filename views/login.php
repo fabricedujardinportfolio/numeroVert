@@ -21,8 +21,7 @@ if(isset($_REQUEST['valider']))	//button name is "btn_login"
 	{
 		try
 		{
-			$select_stmt=$conn->prepare("SELECT agents.id,passwords,email,poles_services_id,active
-            FROM `agents` 
+			$select_stmt=$conn->prepare("SELECT * FROM `agents` 
             WHERE agents.email=:uemail"
             ); 
             
@@ -49,34 +48,34 @@ if(isset($_REQUEST['valider']))	//button name is "btn_login"
                     $_SESSION["user_activity"] = $row["active"];
                     $active = $_SESSION["user_activity"]; 
                     // $active = Si l'utilisateur et toujour active dans la base de donnée 
-                    // var_dump($active);
+                    // var_dump($row);
+                    $rowAutorisationNumVert = $row["role_numVert"];
 
                     if ($agentsid != ' ' && $active == "1") {
                         if($password==$row["passwords"]) //check condition user taypable "password" is match from database "password" using password_verify() after continue
                         {
                             try {
                                 //Rechercher si une autorisation existe pour id de l'utilisateur 
-                                $select_stmt=$conn->prepare("SELECT *
-                                FROM `agents_has_applications` 
-                                WHERE applications_id = 2
-                                AND agents_id = :agentsid"
-                                );
+                                // $select_stmt=$conn->prepare("SELECT *
+                                // FROM `agents_has_applications` 
+                                // WHERE applications_id = 2
+                                // AND agents_id = :agentsid"
+                                // );
                                 //sql select query
-                                $select_stmt->execute(array(':agentsid'=>$agentsid));	//execute query with bind parameter
-                                $rowAutorisations=$select_stmt->fetchAll(PDO::FETCH_ASSOC);	    
-                                foreach ($rowAutorisations as $rowAutorisation) {                                    
-                                    if ($rowAutorisation["applications_id"] == "2" && $rowAutorisation["agents_id"] != "" && $rowAutorisation["droit"] != "" && $agentsid == $rowAutorisation["agents_id"] ) {
-                                        if ($rowAutorisation["droit"] == "A") {
+                                // $select_stmt->execute(array(':agentsid'=>$agentsid));	//execute query with bind parameter
+                                // $rowAutorisations=$select_stmt->fetchAll(PDO::FETCH_ASSOC);	                                    
+                                    if ($rowAutorisationNumVert != 0 && $active == "1" ) {
+                                        if ($rowAutorisationNumVert == "1") {
                                             # Connexion depuis un compte admin
-                                            $_SESSION["user_droit"] = $rowAutorisation["droit"];
+                                            $_SESSION["user_droit"] = $rowAutorisationNumVert;
                                             $userDroit = $_SESSION["user_droit"];   
                                             // var_dump($userDroit);
                                             $_SESSION["loggedIn"] = true;
                                             $loginMsg = "Connexion réussie...";		//user login success message
                                             header("refresh:2; ../index.php");			//refresh 2 second after redirect to "welcome.php" page
-                                        }elseif ($rowAutorisation["droit"] == "U") {
+                                        }elseif ($rowAutorisationNumVert == "2") {
                                             # Connexion depuis un compte Utilisateur
-                                            $_SESSION["user_droit"] = $rowAutorisation["droit"];
+                                            $_SESSION["user_droit"] = $rowAutorisationNumVert;
                                             $userDroit = $_SESSION["user_droit"]; 
                                             // var_dump($userDroit);
                                             $_SESSION["loggedIn"] = true;
@@ -88,9 +87,8 @@ if(isset($_REQUEST['valider']))	//button name is "btn_login"
                                         }
                                     } else {
                                         # Erreur interdiction de connexion l'utilisateur                                    
-                                        $errorMsg[]="il semblerait que vous faisait quelque chose d'inhabituel";
-                                    }                                    
-                                }  
+                                        $errorMsg[]="Vous n'avez pas les droits de vous connecter";
+                                    }     
                                                               
                             } 
                             catch(PDOException $e)
@@ -115,7 +113,7 @@ if(isset($_REQUEST['valider']))	//button name is "btn_login"
 			}
 			else
 			{
-				$errorMsg[]="Aucune entré vous correspondant";
+				$errorMsg[]="Vous n'avez pas les droits de vous connecter";
 			}
 		}
 		catch(PDOException $e)

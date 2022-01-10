@@ -2,7 +2,7 @@
 <?php
 require_once 'classes/database.php';
 //   $root = "http://num_vert/";
-  $root = "http://192.168.40.77/applications/numeroVert/";
+  $root = "http://num-vert/";
   $login_path = $root . "views/login.php";
   $logout_path = $root . "views/logout.php";
   $register_path = $root . "views/registration.php";
@@ -42,15 +42,31 @@ if(!isset($_SESSION["loggedIn"]) || $_SESSION["loggedIn"] == false):
         //     }
 ?>
 
-<div class="container-fluid">
-<header class="col-md-12 m-auto d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom d-flex">
+<div class="container-fluid p-0 m-0">
+<header class="col-md-12 m-auto d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom d-flex" style="background-color: #94c123;">
     <a href="<?php echo $root . "index.php" ?>"
         class="col-md-6 col-12 d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none flex-wrap ms-md-3 justify-content-center justify-content-md-start">
-        <span class="fs-4 text-uppercase">Numéro vert</span>        
+        
+        <?php 
+        if ($_SESSION['user_droit'] == 2 ) {
+            ?> 
+            <span class="fs-4 text-uppercase"> Numéro vert</span> <span class="fs-4"> -  module Admin</span>
+        <?php
+        } else if ($_SESSION['user_droit'] == 1 ) {
+            ?>
+            <span class="fs-4 text-uppercase">Numéro vert</span> 
+        <?php
+        } else {
+           ?> 
+           Tu n'as rien à faire ici </span>
+           <?php  
+        }       
+        
+        ?>          
     </a>
     <ul class="nav nav-pills">        
-        <li class="nav-item"><a href="http://mot-de-passe/" class="nav-link text-uppercase" style="color:#2e4f9b;">Changer de mot de passe</a></li>
-        <li class="nav-item"><a href="<?php echo $logout_path; ?>" class="nav-link text-uppercase" style="color:#2e4f9b;">Déconnexion</a></li>
+        <li class="nav-item"><a href="http://mot-de-passe/" class="nav-link text-uppercase" style="color:white;">Changer de mot de passe</a></li>
+        <li class="nav-item"><a href="<?php echo $logout_path; ?>" class="nav-link text-uppercase" style="color : white;">Déconnexion</a></li>
     </ul>
 </header>
 
