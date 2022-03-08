@@ -216,6 +216,7 @@ elseif ($_SESSION["user_droit"] == "2") :
                                   <option value="RECHERCHE EMPLOI">RECHERCHE EMPLOI</option>
                                   <option value="SERVICE ENVIRONNEMENT STAGIAIRE">SERVICE ENVIRONNEMENT STAGIAIRE</option>
                                   <option value="SUIVI CANDIDAT">SUIVI CANDIDAT</option>
+                                  <option value="SUIVI/ACCOMP IOEPA">SUIVI/ACCOMP IOEPA</option>
                                   <option value="VAE">VAE</option>
                                 </select>
                               </div>
@@ -738,7 +739,8 @@ elseif ($_SESSION["user_droit"] == "1") :
                           <option value="PROJET PROFESSIONNEL">PROJET PROFESSIONNEL</option>
                           <option value="RECHERCHE EMPLOI">RECHERCHE EMPLOI</option>
                           <option value="SERVICE ENVIRONNEMENT STAGIAIRE">SERVICE ENVIRONNEMENT STAGIAIRE</option>
-                          <option value="SUIVI CANDIDAT">SUIVI CANDIDAT</option>
+                          <option value="SUIVI CANDIDAT">SUIVI CANDIDAT</option>                          
+                          <option value="SUIVI/ACCOMP IOEPA">SUIVI/ACCOMP IOEPA</option>
                           <option value="VAE">VAE</option>
                         </select>
                       </div>
